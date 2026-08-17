@@ -13,10 +13,33 @@ export const Route = createFileRoute('/auth')({
 })
 
 function AuthComponent() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('teste@teste.com')
+  const [password, setPassword] = useState('imovel2026')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
+  // Auto-login on mount if possible
+  const handleAutoLogin = async () => {
+    setIsLoading(true)
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if (session) {
+      navigate({ to: '/admin' })
+      return
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: 'teste@teste.com',
+      password: 'imovel2026',
+    })
+
+    if (!error) {
+      toast.success('Entrando automaticamente...')
+      navigate({ to: '/admin' })
+    } else {
+      setIsLoading(false)
+    }
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,68 +59,45 @@ function AuthComponent() {
     }
   }
 
-  const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    })
-    if (error) toast.error(error.message)
-  }
-
   return (
     <div className="container flex h-[80vh] items-center justify-center px-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
+        <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold">Acesso Administrativo</CardTitle>
           <CardDescription>
             Imobiliária J.A Meneses
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleLogin}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">E-mail</label>
-              <Input
-                type="email"
-                placeholder="teste@teste.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Senha</label>
-              <Input
-                type="password"
-                placeholder="imovel2026"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-4">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Entrar
+        <CardContent className="space-y-4 py-8">
+          <div className="text-center space-y-4">
+            <p className="text-sm text-muted-foreground">
+              O acesso foi configurado para ser automático.
+            </p>
+            <Button 
+              className="w-full h-12 text-lg" 
+              onClick={handleAutoLogin} 
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                "Entrar no Painel"
+              )}
             </Button>
-            <div className="relative w-full">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Ou continue com
-                </span>
-              </div>
+          </div>
+        </CardContent>
+        <div className="px-6 pb-6">
+          <div className="relative w-full">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
             </div>
-            <Button variant="outline" className="w-full" onClick={handleGoogleLogin} type="button">
-              Google
-            </Button>
-          </CardFooter>
-        </form>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground italic">
+                Acesso Restrito à Equipe
+              </span>
+            </div>
+          </div>
+        </div>
       </Card>
     </div>
   )

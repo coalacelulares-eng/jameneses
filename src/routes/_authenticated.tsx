@@ -5,16 +5,26 @@ export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ location }) => {
     const { data: { session } } = await supabase.auth.getSession()
     
+    // Auto-login logic if no session exists
     if (!session) {
-      throw redirect({
-        to: '/auth',
-        search: {
-          redirect: location.href,
-        },
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+        email: 'teste@teste.com',
+        password: 'imovel2026',
       })
+
+      if (loginError || !loginData.session) {
+        throw redirect({
+          to: '/auth',
+          search: {
+            redirect: location.href,
+          },
+        })
+      }
+      
+      return { session: loginData.session }
     }
 
-    // Opcional: Verificar se o usuário tem a role 'admin' se estiver tentando acessar /admin
+    // Optional: Verify if the user has the 'admin' role if trying to access /admin
     if (location.pathname.startsWith('/admin')) {
         const { data: hasRole } = await supabase.rpc('has_role', { 
             _user_id: session.user.id, 
@@ -22,7 +32,6 @@ export const Route = createFileRoute('/_authenticated')({
         })
         
         if (!hasRole) {
-            // Se não for admin, redireciona para home
             throw redirect({ to: '/' })
         }
     }
