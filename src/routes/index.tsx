@@ -273,7 +273,7 @@ function Index() {
                 </div>
                 <div>
                   <h4 className="font-bold">Telefone & WhatsApp</h4>
-                  <p className="text-primary-foreground/70">(11) 9999-9999</p>
+                  <p className="text-primary-foreground/70">(11) 95921-3175</p>
                 </div>
               </div>
               <div className="flex gap-6 text-left">
@@ -329,7 +329,7 @@ function Index() {
 
       {/* Floating WhatsApp */}
       <a 
-        href="https://wa.me/5511999999999" 
+        href="https://wa.me/5511959213175" 
         target="_blank" 
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition-transform hover:scale-110 active:scale-95"
