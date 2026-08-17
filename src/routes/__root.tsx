@@ -12,7 +12,7 @@ import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/logo-v2.png.asset.json";
 
 function Navbar() {
   return (
@@ -34,7 +34,7 @@ function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <a
-            href="https://wa.me/5511999999999"
+            href="https://wa.me/5511959213175"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 md:block"
@@ -86,7 +86,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-secondary" />
-                <span>(11) 9999-9999</span>
+                <span>(11) 95921-3175</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="shrink-0 text-secondary" />
