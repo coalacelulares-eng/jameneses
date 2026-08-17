@@ -438,3 +438,86 @@ function Index() {
   );
 }
 
+function TestimonialsCarousel() {
+  const [emblaRef] = useEmblaCarousel({ 
+    loop: true, 
+    align: 'start',
+    slidesToScroll: 1,
+    breakpoints: {
+      '(min-width: 768px)': { slidesToScroll: 2 },
+      '(min-width: 1024px)': { slidesToScroll: 3 }
+    }
+  });
+
+  const testimonials = [
+    {
+      name: "Ricardo Silva",
+      text: "Excelente atendimento, profissionais muito competentes e atenciosos. Recomendo com certeza para quem busca aluguel sem burocracia.",
+      rating: 5,
+      date: "Facebook Review"
+    },
+    {
+      name: "Maria Oliveira",
+      text: "A J.A Meneses me ajudou a encontrar o apartamento perfeito na Vila Prudente. Processo rápido e transparente. Nota 10!",
+      rating: 5,
+      date: "Facebook Review"
+    },
+    {
+      name: "Carlos Eduardo",
+      text: "Imobiliária séria e comprometida. Fui muito bem atendido desde a primeira visita até a assinatura do contrato. Parabéns pela equipe.",
+      rating: 5,
+      date: "Facebook Review"
+    },
+    {
+      name: "Ana Beatriz",
+      text: "Encontrei meu apartamento em Moema através deles. O suporte jurídico e a clareza nas informações foram fundamentais. Recomendo muito!",
+      rating: 5,
+      date: "Facebook Review"
+    },
+    {
+      name: "Juliana Mendes",
+      text: "Estou muito satisfeita com o aluguel do meu ponto comercial. A equipe da J.A Meneses é extremamente profissional.",
+      rating: 5,
+      date: "Facebook Review"
+    },
+    {
+      name: "Marcos Paulo",
+      text: "Atendimento diferenciado. Fui em várias imobiliárias em São Paulo, mas só aqui senti segurança de verdade para fechar negócio.",
+      rating: 5,
+      date: "Facebook Review"
+    }
+  ];
+
+  return (
+    <div className="overflow-hidden" ref={emblaRef}>
+      <div className="flex">
+        {testimonials.map((testimonial, idx) => (
+          <div key={idx} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="relative h-full rounded-2xl bg-background p-8 shadow-sm border border-border"
+            >
+              <Quote className="absolute top-6 right-8 h-8 w-8 text-secondary/20" />
+              <div className="mb-4 flex gap-1">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-secondary text-secondary" />
+                ))}
+              </div>
+              <p className="mb-6 text-muted-foreground italic leading-relaxed">
+                "{testimonial.text}"
+              </p>
+              <div>
+                <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                <span className="text-xs text-muted-foreground">{testimonial.date}</span>
+              </div>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
