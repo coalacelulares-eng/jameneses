@@ -138,17 +138,22 @@
     color: var(--color-foreground);
   }
 
-  /* Hiding Lovable badge */
-  [class*="lovable"],
-  [id*="lovable"],
+  /* Hiding Lovable badge and related elements */
+  #lovable-badge,
+  .lovable-badge,
+  [id*="lovable-badge"],
+  [class*="lovable-badge"],
   a[href*="lovable.app"],
-  div[class*="badge"],
-  .lovable-badge {
+  #gpt-engineer-badge,
+  .gpt-engineer-badge,
+  [id*="gpt-engineer"],
+  [class*="gpt-engineer"] {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
     width: 0 !important;
     height: 0 !important;
+    z-index: -9999 !important;
   }
 }
