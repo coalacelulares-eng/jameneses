@@ -1,43 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone } from "lucide-react";
+import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { sendMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const MOCK_PROPERTIES = [
-  {
-    id: 1,
-    title: "Apartamento Moderno - Vila Mariana",
-    price: "R$ 3.500/mês",
-    beds: 2,
-    baths: 2,
-    sqft: "75m²",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800",
-    tag: "Destaque"
-  },
-  {
-    id: 2,
-    title: "Casa de Vila - Pinheiros",
-    price: "R$ 5.200/mês",
-    beds: 3,
-    baths: 2,
-    sqft: "120m²",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-    tag: "Aluguel"
-  },
-  {
-    id: 3,
-    title: "Studio Loft - Itaim Bibi",
-    price: "R$ 2.800/mês",
-    beds: 1,
-    baths: 1,
-    sqft: "45m²",
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800",
-    tag: "Novo"
-  }
-];
+async function fetchProperties() {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .order("created_at", { ascending: false });
+  
+  if (error) throw error;
+  return data;
+}
+
 
 function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
   return (
