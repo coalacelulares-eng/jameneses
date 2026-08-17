@@ -1,45 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone } from "lucide-react";
+import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { sendMessage } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const MOCK_PROPERTIES = [
-  {
-    id: 1,
-    title: "Apartamento Moderno - Vila Mariana",
-    price: "R$ 3.500/mês",
-    beds: 2,
-    baths: 2,
-    sqft: "75m²",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800",
-    tag: "Destaque"
-  },
-  {
-    id: 2,
-    title: "Casa de Vila - Pinheiros",
-    price: "R$ 5.200/mês",
-    beds: 3,
-    baths: 2,
-    sqft: "120m²",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-    tag: "Aluguel"
-  },
-  {
-    id: 3,
-    title: "Studio Loft - Itaim Bibi",
-    price: "R$ 2.800/mês",
-    beds: 1,
-    baths: 1,
-    sqft: "45m²",
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800",
-    tag: "Novo"
-  }
-];
+async function fetchProperties() {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .order("created_at", { ascending: false });
+  
+  if (error) throw error;
+  return data;
+}
 
-function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
+
+function PropertyCard({ property }: { property: any }) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -49,7 +32,7 @@ function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img 
-          src={property.image} 
+          src={property.image_url} 
           alt={property.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -83,7 +66,32 @@ function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
   );
 }
 
+
 function Index() {
+  const { data: properties, isLoading } = useQuery({
+    queryKey: ["properties"],
+    queryFn: fetchProperties,
+  });
+
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  
+  const contactMutation = useMutation({
+    mutationFn: (data: { name: string; email: string; message: string }) => sendMessage({ data }),
+    onSuccess: () => {
+
+      toast.success("Mensagem enviada com sucesso!");
+      setFormData({ name: "", email: "", message: "" });
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Erro ao enviar mensagem.");
+    }
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    contactMutation.mutate(formData);
+  };
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -162,11 +170,17 @@ function Index() {
             <div className="mt-4 h-1.5 w-20 rounded-full bg-secondary"></div>
           </div>
           
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {MOCK_PROPERTIES.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {properties?.map((property: any) => (
+                <PropertyCard key={property.id} property={property} />
+              ))}
+            </div>
+          )}
           
           <div className="mt-16 text-center">
             <button className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
@@ -277,26 +291,40 @@ function Index() {
               </div>
             </div>
             
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4">
                 <input 
                   type="text" 
                   placeholder="Seu Nome" 
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
                 />
                 <input 
                   type="email" 
                   placeholder="Seu E-mail" 
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
                 />
               </div>
               <textarea 
                 placeholder="Como podemos ajudar?" 
                 rows={4}
+                required
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
               ></textarea>
-              <button className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90">
-                Enviar Mensagem
+              <button 
+                type="submit"
+                disabled={contactMutation.isPending}
+                className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90 disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {contactMutation.isPending && <Loader2 className="animate-spin h-5 w-5" />}
+                {contactMutation.isPending ? "Enviando..." : "Enviar Mensagem"}
               </button>
             </form>
           </div>
@@ -315,3 +343,4 @@ function Index() {
     </div>
   );
 }
+
