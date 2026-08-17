@@ -311,41 +311,42 @@ function Index() {
               </div>
               
               <form className="space-y-4" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-4">
-                <input 
-                  type="text" 
-                  placeholder="Seu nome" 
+                <div className="grid grid-cols-2 gap-4">
+                  <input 
+                    type="text" 
+                    placeholder="Seu nome" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
+                  />
+                  <input 
+                    type="email" 
+                    placeholder="seu@email.com" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
+                  />
+                </div>
+                <textarea 
+                  placeholder="Como podemos ajudar?" 
+                  rows={4}
                   required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-                />
-                <input 
-                  type="email" 
-                  placeholder="seu@email.com" 
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-                />
-              </div>
-              <textarea 
-                placeholder="Como podemos ajudar?" 
-                rows={4}
-                required
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-              ></textarea>
-              <button 
-                type="submit"
-                disabled={contactMutation.isPending}
-                className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90 disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {contactMutation.isPending && <Loader2 className="animate-spin h-5 w-5" />}
-                {contactMutation.isPending ? "Enviando..." : "Enviar Mensagem"}
-              </button>
-            </form>
+                ></textarea>
+                <button 
+                  type="submit"
+                  disabled={contactMutation.isPending}
+                  className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {contactMutation.isPending && <Loader2 className="animate-spin h-5 w-5" />}
+                  {contactMutation.isPending ? "Enviando..." : "Enviar Mensagem"}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
