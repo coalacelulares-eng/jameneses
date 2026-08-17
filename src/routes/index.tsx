@@ -76,8 +76,9 @@ function Index() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   
   const contactMutation = useMutation({
-    mutationFn: sendMessage,
+    mutationFn: (data: { name: string; email: string; message: string }) => sendMessage({ data }),
     onSuccess: () => {
+
       toast.success("Mensagem enviada com sucesso!");
       setFormData({ name: "", email: "", message: "" });
     },
