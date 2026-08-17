@@ -296,7 +296,7 @@ function Index() {
               <div className="grid grid-cols-2 gap-4">
                 <input 
                   type="text" 
-                  placeholder="Seu Nome" 
+                  placeholder="Seu nome" 
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -304,7 +304,7 @@ function Index() {
                 />
                 <input 
                   type="email" 
-                  placeholder="Seu E-mail" 
+                  placeholder="seu@email.com" 
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
