@@ -58,18 +58,20 @@ function AuthComponent() {
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">E-mail</label>
               <Input
                 type="email"
-                placeholder="nome@exemplo.com"
+                placeholder="teste@teste.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Senha</label>
               <Input
                 type="password"
-                placeholder="Sua senha"
+                placeholder="imovel2026"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

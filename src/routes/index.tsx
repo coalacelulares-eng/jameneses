@@ -259,18 +259,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Testimonials Section with Carousel */}
-      <section id="depoimentos" className="bg-muted/30 py-24 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 flex flex-col items-center text-center">
-            <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-secondary">Depoimentos</h2>
-            <h3 className="mt-4 text-3xl font-extrabold text-foreground sm:text-4xl">O que nossos clientes dizem</h3>
-            <div className="mt-4 h-1.5 w-20 rounded-full bg-secondary"></div>
-          </div>
-
-          <TestimonialsCarousel />
-        </div>
-      </section>
 
       {/* Featured Listing: Apartamento Moema */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-background">
