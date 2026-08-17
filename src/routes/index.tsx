@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2, Clock } from "lucide-react";
+import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2, Clock, Star, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -253,6 +253,63 @@ function Index() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="depoimentos" className="bg-muted/30 py-24 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-secondary">Depoimentos</h2>
+            <h3 className="mt-4 text-3xl font-extrabold text-foreground sm:text-4xl">O que nossos clientes dizem</h3>
+            <div className="mt-4 h-1.5 w-20 rounded-full bg-secondary"></div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                name: "Ricardo Silva",
+                text: "Excelente atendimento, profissionais muito competentes e atenciosos. Recomendo com certeza para quem busca aluguel sem burocracia.",
+                rating: 5,
+                date: "Facebook Review"
+              },
+              {
+                name: "Maria Oliveira",
+                text: "A J.A Meneses me ajudou a encontrar o apartamento perfeito na Vila Prudente. Processo rápido e transparente. Nota 10!",
+                rating: 5,
+                date: "Facebook Review"
+              },
+              {
+                name: "Carlos Eduardo",
+                text: "Imobiliária séria e comprometida. Fui muito bem atendido desde a primeira visita até a assinatura do contrato. Parabéns pela equipe.",
+                rating: 5,
+                date: "Facebook Review"
+              }
+            ].map((testimonial, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative rounded-2xl bg-background p-8 shadow-sm border border-border"
+              >
+                <Quote className="absolute top-6 right-8 h-8 w-8 text-secondary/20" />
+                <div className="mb-4 flex gap-1">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} size={16} className="fill-secondary text-secondary" />
+                  ))}
+                </div>
+                <p className="mb-6 text-muted-foreground italic leading-relaxed">
+                  "{testimonial.text}"
+                </p>
+                <div>
+                  <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                  <span className="text-xs text-muted-foreground">{testimonial.date}</span>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

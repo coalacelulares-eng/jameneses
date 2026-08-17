@@ -30,6 +30,7 @@ function Navbar() {
           <Link to="/" className="text-sm font-medium hover:text-primary">Início</Link>
           <a href="#imoveis" className="text-sm font-medium hover:text-primary">Imóveis</a>
           <a href="#sobre" className="text-sm font-medium hover:text-primary">Sobre Nós</a>
+          <a href="#depoimentos" className="text-sm font-medium hover:text-primary">Depoimentos</a>
           <a href="#contato" className="text-sm font-medium hover:text-primary">Contato</a>
         </div>
         <div className="flex items-center gap-4">
@@ -72,6 +73,7 @@ function Footer() {
               <li><Link to="/" className="hover:text-secondary">Início</Link></li>
               <li><a href="#imoveis" className="hover:text-secondary">Imóveis para Alugar</a></li>
               <li><a href="#sobre" className="hover:text-secondary">Quem Somos</a></li>
+              <li><a href="#depoimentos" className="hover:text-secondary">Depoimentos</a></li>
               <li><a href="#contato" className="hover:text-secondary">Fale Conosco</a></li>
               <li><Link to="/admin" className="hover:text-secondary opacity-50 text-[10px] mt-4 block">Área Restrita</Link></li>
 
