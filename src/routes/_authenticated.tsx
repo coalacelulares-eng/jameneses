@@ -7,12 +7,24 @@ export const Route = createFileRoute('/_authenticated')({
     
     // Auto-login logic if no session exists
     if (!session) {
-      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-        email: 'teste@teste.com',
-        password: 'imovel2026',
-      })
+      try {
+        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+          email: 'teste@teste.com',
+          password: 'imovel2026',
+        })
 
-      if (loginError || !loginData.session) {
+        if (loginError || !loginData.session) {
+          throw redirect({
+            to: '/auth',
+            search: {
+              redirect: location.href,
+            },
+          })
+        }
+        
+        return { session: loginData.session }
+      } catch (err) {
+        console.error('Auto-login error:', err);
         throw redirect({
           to: '/auth',
           search: {
@@ -20,18 +32,22 @@ export const Route = createFileRoute('/_authenticated')({
           },
         })
       }
-      
-      return { session: loginData.session }
     }
 
-    // Optional: Verify if the user has the 'admin' role if trying to access /admin
+    // Role check logic
     if (location.pathname.startsWith('/admin')) {
-        const { data: hasRole } = await supabase.rpc('has_role', { 
-            _user_id: session.user.id, 
-            _role: 'admin' 
-        })
-        
-        if (!hasRole) {
+        try {
+            const { data: hasRole, error: roleError } = await supabase.rpc('has_role', { 
+                _user_id: session.user.id, 
+                _role: 'admin' 
+            })
+            
+            if (roleError || !hasRole) {
+                console.warn('User does not have admin role or role check failed');
+                throw redirect({ to: '/' })
+            }
+        } catch (err) {
+            console.error('Role verification error:', err);
             throw redirect({ to: '/' })
         }
     }
