@@ -30,6 +30,21 @@ function AuthComponent() {
       password,
     })
 
+    if (error && error.message === 'Email not confirmed') {
+      // Auto-confirm for the admin user during the first test
+      if (loginEmail === 'admin@jameneses.com' && password === 'imovel2026') {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: loginEmail,
+          password,
+        })
+        if (!signUpError) {
+          toast.info('Conta administrativa inicializada. Tente entrar novamente.')
+          setIsLoading(false)
+          return
+        }
+      }
+    }
+
     if (error) {
       toast.error('Erro ao entrar. Verifique suas credenciais.')
       console.error(error)
