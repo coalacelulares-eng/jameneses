@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { sendMessage } from "@/lib/contact.functions";
+import storeFrontAsset from "@/assets/store-front.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -220,11 +221,13 @@ function Index() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1000" 
-                alt="Equipe" 
-                className="rounded-2xl shadow-2xl"
-              />
+              <div className="overflow-hidden rounded-2xl shadow-2xl bg-muted aspect-square md:aspect-auto">
+                <img 
+                  src={storeFrontAsset.url} 
+                  alt="Nossa Sede" 
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
               <div className="absolute -bottom-6 -right-6 rounded-2xl bg-secondary p-8 shadow-xl hidden md:block">
                 <span className="block text-4xl font-black text-secondary-foreground">15+</span>
                 <span className="text-sm font-bold uppercase tracking-wider text-secondary-foreground/70">Anos de Experiência</span>
