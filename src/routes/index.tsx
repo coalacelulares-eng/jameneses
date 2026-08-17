@@ -282,7 +282,7 @@ function Index() {
                 </div>
                 <div>
                   <h4 className="font-bold">Endereço</h4>
-                  <p className="text-primary-foreground/70">São Paulo, SP - Atendimento com agendamento.</p>
+                  <p className="text-primary-foreground/70">Avenida do Oratório, 2642, São Paulo, SP, Brazil</p>
                 </div>
               </div>
             </div>

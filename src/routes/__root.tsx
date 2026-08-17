@@ -82,7 +82,7 @@ function Footer() {
             <ul className="space-y-4 text-sm text-primary-foreground/70">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="shrink-0 text-secondary" />
-                <span>São Paulo, SP</span>
+                <span>Avenida do Oratório, 2642, São Paulo, SP</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-secondary" />
@@ -90,7 +90,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="shrink-0 text-secondary" />
-                <span>contato@jameneses.com.br</span>
+                <span>j.a.menesessp@gmail.com</span>
               </li>
             </ul>
           </div>
