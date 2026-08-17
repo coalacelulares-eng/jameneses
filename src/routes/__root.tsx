@@ -12,18 +12,20 @@ import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logoAsset.url} alt="Logo J.A Meneses" className="h-12 w-auto" />
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tighter text-primary">J.A MENESES</span>
             <span className="text-[10px] font-semibold tracking-widest text-secondary uppercase">Imobiliária</span>
           </div>
         </Link>
+
         <div className="hidden md:flex md:items-center md:gap-8">
           <Link to="/" className="text-sm font-medium hover:text-primary">Início</Link>
           <a href="#imoveis" className="text-sm font-medium hover:text-primary">Imóveis</a>
@@ -193,7 +195,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,

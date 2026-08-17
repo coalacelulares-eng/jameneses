@@ -182,13 +182,8 @@ function Index() {
             </div>
           )}
           
-          <div className="mt-16 text-center">
-            <a href="https://www.instagram.com/j.a.menesessp" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
-              Ver Todos no Instagram
-              <ArrowRight size={18} />
-            </a>
+          <div className="mt-16 text-center" />
 
-          </div>
         </div>
       </section>
 
