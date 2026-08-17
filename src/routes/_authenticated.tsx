@@ -5,33 +5,14 @@ export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ location }) => {
     const { data: { session } } = await supabase.auth.getSession()
     
-    // Auto-login logic if no session exists
+    // No auto-login in loader to prevent redirect loops and allow manual login
     if (!session) {
-      try {
-        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-          email: 'teste@teste.com',
-          password: 'imovel2026',
-        })
-
-        if (loginError || !loginData.session) {
-          throw redirect({
-            to: '/auth',
-            search: {
-              redirect: location.href,
-            },
-          })
-        }
-        
-        return { session: loginData.session }
-      } catch (err) {
-        console.error('Auto-login error:', err);
-        throw redirect({
-          to: '/auth',
-          search: {
-            redirect: location.href,
-          },
-        })
-      }
+      throw redirect({
+        to: '/auth',
+        search: {
+          redirect: location.href,
+        },
+      })
     }
 
     // Role check logic
