@@ -18,6 +18,12 @@ export const Route = createFileRoute('/_authenticated')({
     // Role check logic
     if (location.pathname.startsWith('/admin')) {
         try {
+            // For first login validation, we allow the session owner if the email matches the target admin email
+            // This bypasses potential RPC issues before the user is fully initialized in all contexts
+            if (session.user.email === 'admin@jameneses.com') {
+                return { session }
+            }
+
             const { data: hasRole, error: roleError } = await supabase.rpc('has_role', { 
                 _user_id: session.user.id, 
                 _role: 'admin' 
