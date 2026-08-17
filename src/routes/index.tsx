@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2 } from "lucide-react";
+import { Search, Home, Building2, Key, ArrowRight, Instagram, Facebook, Phone, Loader2, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -285,44 +285,68 @@ function Index() {
                   <p className="text-primary-foreground/70">Avenida do Oratório, 2642, São Paulo, SP, Brazil</p>
                 </div>
               </div>
+              <div className="flex gap-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/10 text-secondary">
+                  <Clock size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold">Horário de Funcionamento</h4>
+                  <p className="text-primary-foreground/70">Segunda a Sexta: 09:00 às 18:00</p>
+                </div>
+              </div>
             </div>
             
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-4">
-                <input 
-                  type="text" 
-                  placeholder="Seu nome" 
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-                />
-                <input 
-                  type="email" 
-                  placeholder="seu@email.com" 
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-                />
+            <div className="space-y-6">
+              <div className="overflow-hidden rounded-2xl shadow-lg border border-primary-foreground/10 h-[300px]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.77259695679!2d-46.5492!3d-23.58!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce5d9a9a9a9a9b%3A0x9a9a9a9a9a9a9a9a!2sAv.%20do%20Orat%C3%B3rio%2C%202642%20-%20Vila%20Ivone%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2003220-100!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Localização Imobiliária J.A Meneses"
+                ></iframe>
               </div>
-              <textarea 
-                placeholder="Como podemos ajudar?" 
-                rows={4}
-                required
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-              ></textarea>
-              <button 
-                type="submit"
-                disabled={contactMutation.isPending}
-                className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90 disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {contactMutation.isPending && <Loader2 className="animate-spin h-5 w-5" />}
-                {contactMutation.isPending ? "Enviando..." : "Enviar Mensagem"}
-              </button>
-            </form>
+              
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-2 gap-4">
+                  <input 
+                    type="text" 
+                    placeholder="Seu nome" 
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
+                  />
+                  <input 
+                    type="email" 
+                    placeholder="seu@email.com" 
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
+                  />
+                </div>
+                <textarea 
+                  placeholder="Como podemos ajudar?" 
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full rounded-xl border border-primary-foreground/20 bg-background/5 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
+                ></textarea>
+                <button 
+                  type="submit"
+                  disabled={contactMutation.isPending}
+                  className="w-full rounded-xl bg-secondary py-4 font-bold text-secondary-foreground transition-all hover:bg-secondary/90 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {contactMutation.isPending && <Loader2 className="animate-spin h-5 w-5" />}
+                  {contactMutation.isPending ? "Enviando..." : "Enviar Mensagem"}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
