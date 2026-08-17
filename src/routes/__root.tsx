@@ -71,6 +71,8 @@ function Footer() {
               <li><a href="#imoveis" className="hover:text-secondary">Imóveis para Alugar</a></li>
               <li><a href="#sobre" className="hover:text-secondary">Quem Somos</a></li>
               <li><a href="#contato" className="hover:text-secondary">Fale Conosco</a></li>
+              <li><Link to="/admin" className="hover:text-secondary opacity-50 text-[10px] mt-4 block">Área Restrita</Link></li>
+
             </ul>
           </div>
           <div>
