@@ -190,34 +190,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Social Call to Action */}
-      <section className="bg-muted py-20 px-4">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-primary p-8 text-center text-primary-foreground shadow-xl md:p-16">
-          <h2 className="text-3xl font-bold md:text-4xl">Nos siga nas redes sociais</h2>
-          <p className="mt-4 text-primary-foreground/70">Acompanhe novos lançamentos e dicas exclusivas diariamente.</p>
-          <div className="mt-10 flex flex-wrap justify-center gap-6">
-            <a 
-              href="https://www.instagram.com/j.a.menesessp" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-xl bg-background/10 px-6 py-4 transition-all hover:bg-background/20"
-            >
-              <Instagram size={24} className="text-secondary" />
-              <span className="font-bold">Instagram</span>
-            </a>
-            <a 
-              href="https://www.facebook.com/JAMENESESSP" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 rounded-xl bg-background/10 px-6 py-4 transition-all hover:bg-background/20"
-            >
-              <Facebook size={24} className="text-secondary" />
-              <span className="font-bold">Facebook</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* About Us */}
       <section id="sobre" className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -255,6 +227,34 @@ function Index() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Call to Action */}
+      <section className="bg-muted py-20 px-4">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-primary p-8 text-center text-primary-foreground shadow-xl md:p-16">
+          <h2 className="text-3xl font-bold md:text-4xl">Nos siga nas redes sociais</h2>
+          <p className="mt-4 text-primary-foreground/70">Acompanhe novos lançamentos e dicas exclusivas diariamente.</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-6">
+            <a 
+              href="https://www.instagram.com/j.a.menesessp" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl bg-background/10 px-6 py-4 transition-all hover:bg-background/20"
+            >
+              <Instagram size={24} className="text-secondary" />
+              <span className="font-bold">Instagram</span>
+            </a>
+            <a 
+              href="https://www.facebook.com/JAMENESESSP" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl bg-background/10 px-6 py-4 transition-all hover:bg-background/20"
+            >
+              <Facebook size={24} className="text-secondary" />
+              <span className="font-bold">Facebook</span>
+            </a>
           </div>
         </div>
       </section>
