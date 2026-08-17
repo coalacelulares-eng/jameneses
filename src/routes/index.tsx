@@ -26,6 +26,10 @@ async function fetchProperties() {
 
 
 function PropertyCard({ property }: { property: any }) {
+  const whatsappNumber = property.whatsapp_number || "5511959213175";
+  const message = encodeURIComponent(`Olá, vi o imóvel "${property.title}" no site e gostaria de mais informações.`);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -35,35 +39,47 @@ function PropertyCard({ property }: { property: any }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img 
-          src={property.image_url} 
+          src={property.image_url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1000"} 
           alt={property.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute top-4 left-4 rounded-full bg-secondary px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-secondary-foreground">
-          {property.tag}
+          {property.tag || "Aluguel"}
         </div>
       </div>
       <div className="p-5">
-        <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-primary transition-colors">{property.title}</h3>
+        <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{property.title}</h3>
         <p className="mb-4 text-xl font-bold text-primary">{property.price}</p>
         <div className="flex items-center justify-between border-t pt-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Home size={16} />
-            <span>{property.beds} Qts</span>
+            <span>{property.beds || 0} Qts</span>
           </div>
           <div className="flex items-center gap-1">
             <Building2 size={16} />
-            <span>{property.baths} Ban</span>
+            <span>{property.baths || 0} Ban</span>
           </div>
           <div className="flex items-center gap-1">
             <Key size={16} />
-            <span>{property.sqft}</span>
+            <span>{property.sqft || "N/A"}</span>
           </div>
         </div>
-        <button className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary/5 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
-          Ver Detalhes
+        
+        {property.description && (
+          <p className="mt-4 text-xs text-muted-foreground line-clamp-2 italic">
+            {property.description}
+          </p>
+        )}
+
+        <a 
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary/5 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
+        >
+          Tenho Interesse
           <ArrowRight size={16} />
-        </button>
+        </a>
       </div>
     </motion.div>
   );
