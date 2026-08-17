@@ -13,45 +13,26 @@ export const Route = createFileRoute('/auth')({
 })
 
 function AuthComponent() {
-  const [email, setEmail] = useState('teste@teste.com')
+  const [email, setEmail] = useState('admin')
   const [password, setPassword] = useState('imovel2026')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-
-  // Auto-login on mount if possible
-  const handleAutoLogin = async () => {
-    setIsLoading(true)
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (session) {
-      navigate({ to: '/admin' })
-      return
-    }
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: 'teste@teste.com',
-      password: 'imovel2026',
-    })
-
-    if (!error) {
-      toast.success('Entrando automaticamente...')
-      navigate({ to: '/admin' })
-    } else {
-      setIsLoading(false)
-    }
-  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     
+    // Convert short 'admin' to the required email format for Supabase
+    const loginEmail = email === 'admin' ? 'admin@jameneses.com' : email
+    
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: loginEmail,
       password,
     })
 
     if (error) {
-      toast.error(error.message)
+      toast.error('Erro ao entrar. Verifique suas credenciais.')
+      console.error(error)
       setIsLoading(false)
     } else {
       toast.success('Login realizado com sucesso!')
@@ -63,41 +44,53 @@ function AuthComponent() {
     <div className="container flex h-[80vh] items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Acesso Administrativo</CardTitle>
+          <CardTitle className="text-2xl font-bold uppercase tracking-tighter text-primary">Área Restrita</CardTitle>
           <CardDescription>
             Imobiliária J.A Meneses
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 py-8">
-          <div className="text-center space-y-4">
-            <p className="text-sm text-muted-foreground">
-              O acesso foi configurado para ser automático.
-            </p>
+        <CardContent className="py-6">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Usuário
+              </label>
+              <Input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Senha
+              </label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
             <Button 
-              className="w-full h-12 text-lg" 
-              onClick={handleAutoLogin} 
+              type="submit"
+              className="w-full h-11 text-base font-semibold transition-all" 
               disabled={isLoading}
             >
               {isLoading ? (
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Entrar no Painel"
+                "Entrar"
               )}
             </Button>
-          </div>
+          </form>
         </CardContent>
-        <div className="px-6 pb-6">
-          <div className="relative w-full">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground italic">
-                Acesso Restrito à Equipe
-              </span>
-            </div>
-          </div>
-        </div>
+        <CardFooter className="flex flex-col space-y-2 text-center text-xs text-muted-foreground border-t pt-4 bg-muted/50 rounded-b-lg">
+          <p>Uso exclusivo da equipe administrativa.</p>
+        </CardFooter>
       </Card>
     </div>
   )
