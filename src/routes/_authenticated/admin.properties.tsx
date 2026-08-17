@@ -3,10 +3,18 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/integrations/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Plus, Edit, Trash2, Loader2 } from 'lucide-react'
+import { Plus, Edit, Trash2, Loader2, X } from 'lucide-react'
 import { deleteProperty } from '@/lib/admin.functions'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { PropertyForm } from '@/components/admin/property-form'
 
 export const Route = createFileRoute('/_authenticated/admin/properties')({
   component: AdminProperties,
@@ -14,6 +22,9 @@ export const Route = createFileRoute('/_authenticated/admin/properties')({
 
 function AdminProperties() {
   const queryClient = useQueryClient()
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editingProperty, setEditingProperty] = useState<any>(null)
+
   const { data: properties, isLoading } = useQuery({
     queryKey: ['admin', 'properties'],
     queryFn: async () => {
@@ -28,6 +39,7 @@ function AdminProperties() {
     onSuccess: () => {
       toast.success('Imóvel excluído com sucesso')
       queryClient.invalidateQueries({ queryKey: ['admin', 'properties'] })
+      queryClient.invalidateQueries({ queryKey: ['properties'] })
     },
     onError: (error: any) => {
       toast.error(error.message || 'Erro ao excluir imóvel')
@@ -40,6 +52,16 @@ function AdminProperties() {
     }
   }
 
+  const handleEdit = (property: any) => {
+    setEditingProperty(property)
+    setIsDialogOpen(true)
+  }
+
+  const handleCreate = () => {
+    setEditingProperty(null)
+    setIsDialogOpen(true)
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -47,13 +69,13 @@ function AdminProperties() {
           <h1 className="text-3xl font-bold text-primary">Gerenciar Imóveis</h1>
           <p className="text-muted-foreground">Adicione, edite ou remova imóveis do seu catálogo.</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={handleCreate}>
           <Plus size={18} />
           Novo Imóvel
         </Button>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="rounded-md border bg-card overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -88,7 +110,12 @@ function AdminProperties() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-8 w-8"
+                        onClick={() => handleEdit(property)}
+                      >
                         <Edit size={16} />
                       </Button>
                       <Button 
@@ -108,6 +135,23 @@ function AdminProperties() {
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingProperty ? "Editar Imóvel" : "Adicionar Novo Imóvel"}
+            </DialogTitle>
+            <DialogDescription>
+              Preencha as informações abaixo para {editingProperty ? "atualizar o" : "cadastrar um novo"} imóvel no site.
+            </DialogDescription>
+          </DialogHeader>
+          <PropertyForm 
+            initialData={editingProperty} 
+            onSuccess={() => setIsDialogOpen(false)} 
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
