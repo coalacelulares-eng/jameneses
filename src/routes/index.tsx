@@ -183,10 +183,11 @@ function Index() {
           )}
           
           <div className="mt-16 text-center">
-            <button className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
-              Ver Todos os Imóveis
+            <a href="https://www.instagram.com/j.a.menesessp" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground">
+              Ver Todos no Instagram
               <ArrowRight size={18} />
-            </button>
+            </a>
+
           </div>
         </div>
       </section>
