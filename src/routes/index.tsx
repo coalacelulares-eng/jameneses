@@ -7,6 +7,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { sendMessage } from "@/lib/contact.functions";
 import storeFrontAsset from "@/assets/store-front.png.asset.json";
+import moemaAptAsset from "@/assets/moema-apt.png.asset.json";
+import useEmblaCarousel from 'embla-carousel-react';
 
 export const Route = createFileRoute("/")({
   component: Index,
