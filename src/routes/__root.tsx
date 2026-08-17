@@ -8,7 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
+import { Instagram, Facebook, Phone, Mail, MapPin, Clock } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -91,6 +91,10 @@ function Footer() {
               <li className="flex items-center gap-3">
                 <Mail size={18} className="shrink-0 text-secondary" />
                 <span>j.a.menesessp@gmail.com</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Clock size={18} className="shrink-0 text-secondary" />
+                <span>Seg - Sex: 09:00 - 18:00</span>
               </li>
             </ul>
           </div>
