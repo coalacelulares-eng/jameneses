@@ -137,4 +137,18 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  /* Hiding Lovable badge */
+  [class*="lovable"],
+  [id*="lovable"],
+  a[href*="lovable.app"],
+  div[class*="badge"],
+  .lovable-badge {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
