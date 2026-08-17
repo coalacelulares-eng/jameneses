@@ -22,7 +22,7 @@ async function fetchProperties() {
 }
 
 
-function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
+function PropertyCard({ property }: { property: any }) {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -32,7 +32,7 @@ function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img 
-          src={property.image} 
+          src={property.image_url} 
           alt={property.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -65,6 +65,7 @@ function PropertyCard({ property }: { property: typeof MOCK_PROPERTIES[0] }) {
     </motion.div>
   );
 }
+
 
 function Index() {
   return (
