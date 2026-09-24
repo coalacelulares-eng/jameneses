@@ -8,38 +8,37 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { Instagram, Facebook, Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Truck } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import logoAsset from "@/assets/logo-v2.png.asset.json";
+import logoAsset from "@/assets/gda/logo.jpg.asset.json";
+
+const WHATSAPP_URL = "https://wa.me/5562981688561?text=" + encodeURIComponent("Olá! Gostaria de solicitar uma cotação de frete com a GDA Log.");
 
 function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logoAsset.url} alt="Logo J.A Meneses" className="h-12 w-auto" />
-          <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tighter text-primary">J.A MENESES</span>
-            <span className="text-[10px] font-semibold tracking-widest text-secondary uppercase">Imobiliária</span>
-          </div>
+          <img src={logoAsset.url} alt="Logo GDA Log" className="h-12 w-auto rounded-md" />
         </Link>
 
         <div className="hidden md:flex md:items-center md:gap-8">
-          <Link to="/" className="text-sm font-medium hover:text-primary">Início</Link>
-          <a href="#imoveis" className="text-sm font-medium hover:text-primary">Imóveis</a>
-          <a href="#sobre" className="text-sm font-medium hover:text-primary">Sobre Nós</a>
-          <a href="#contato" className="text-sm font-medium hover:text-primary">Contato</a>
+          <Link to="/" className="text-sm font-medium hover:text-secondary">Início</Link>
+          <a href="#frota" className="text-sm font-medium hover:text-secondary">Nossa Frota</a>
+          <a href="#servicos" className="text-sm font-medium hover:text-secondary">Serviços</a>
+          <a href="#sobre" className="text-sm font-medium hover:text-secondary">Sobre Nós</a>
+          <a href="#contato" className="text-sm font-medium hover:text-secondary">Contato</a>
         </div>
         <div className="flex items-center gap-4">
           <a
-            href="https://wa.me/5511959213175"
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 md:block"
+            className="btn-3d hidden rounded-full bg-secondary px-6 py-2.5 text-sm font-bold text-secondary-foreground md:block"
           >
-            Falar com Consultor
+            Cotação Online
           </a>
         </div>
       </div>
@@ -53,28 +52,21 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           <div className="space-y-4">
-            <h3 className="text-xl font-bold">J.A Meneses</h3>
-            <p className="text-sm text-primary-foreground/70 leading-relaxed">
-              Sua parceira de confiança no mercado imobiliário. Especialistas em encontrar o lar dos seus sonhos ou o melhor investimento para o seu futuro.
-            </p>
-            <div className="flex gap-4">
-              <a href="https://www.instagram.com/j.a.menesessp" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="https://www.facebook.com/JAMENESESSP" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
-                <Facebook size={20} />
-              </a>
+            <div className="flex items-center gap-3">
+              <img src={logoAsset.url} alt="Logo GDA Log" className="h-10 w-auto rounded-md" />
             </div>
+            <p className="text-sm text-primary-foreground/70 leading-relaxed">
+              Transporte rodoviário de cargas com segurança, pontualidade e tecnologia. Sua carga em boas mãos, de Goiânia para todo o Brasil.
+            </p>
           </div>
           <div>
             <h4 className="mb-6 font-bold uppercase tracking-wider text-secondary">Links Rápidos</h4>
             <ul className="space-y-4 text-sm text-primary-foreground/70">
               <li><Link to="/" className="hover:text-secondary">Início</Link></li>
-              <li><a href="#imoveis" className="hover:text-secondary">Imóveis para Alugar</a></li>
+              <li><a href="#frota" className="hover:text-secondary">Nossa Frota</a></li>
+              <li><a href="#servicos" className="hover:text-secondary">Serviços</a></li>
               <li><a href="#sobre" className="hover:text-secondary">Quem Somos</a></li>
               <li><a href="#contato" className="hover:text-secondary">Fale Conosco</a></li>
-              <li><Link to="/admin" className="hover:text-secondary text-xs mt-4 block font-bold uppercase tracking-widest border border-secondary/20 rounded px-2 py-1 inline-block">Área Restrita</Link></li>
-
             </ul>
           </div>
           <div>
@@ -82,39 +74,42 @@ function Footer() {
             <ul className="space-y-4 text-sm text-primary-foreground/70">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="shrink-0 text-secondary" />
-                <span>Avenida do Oratório, 2642, São Paulo, SP</span>
+                <span>Goiânia, GO — Brasil</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-secondary" />
-                <span>(11) 95921-3175</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail size={18} className="shrink-0 text-secondary" />
-                <span>j.a.menesessp@gmail.com</span>
+                <span>(62) 98168-8561</span>
               </li>
               <li className="flex items-center gap-3">
                 <Clock size={18} className="shrink-0 text-secondary" />
-                <span>Seg - Sex: 09:00 - 18:00</span>
+                <span>Seg - Sex: 08:00 - 18:00</span>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="mb-6 font-bold uppercase tracking-wider text-secondary">Newsletter</h4>
-            <p className="mb-4 text-sm text-primary-foreground/70">Receba novidades e ofertas exclusivas.</p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Seu e-mail"
-                className="w-full rounded-md border border-primary-foreground/20 bg-primary-foreground/10 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-secondary"
-              />
-              <button type="submit" className="rounded-md bg-secondary px-4 py-2 text-xs font-bold text-secondary-foreground transition-all hover:bg-secondary/90">
-                OK
-              </button>
-            </form>
+            <h4 className="mb-6 font-bold uppercase tracking-wider text-secondary">Dados da Empresa</h4>
+            <ul className="space-y-4 text-sm text-primary-foreground/70">
+              <li className="flex items-start gap-3">
+                <Truck size={18} className="shrink-0 text-secondary" />
+                <span>GDA Transportes e Serviços Ltda - EPP</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail size={18} className="shrink-0 text-secondary" />
+                <span>CNPJ: 04.781.346/0001-25</span>
+              </li>
+            </ul>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-3d mt-6 inline-block rounded-full bg-secondary px-6 py-2.5 text-sm font-bold text-secondary-foreground"
+            >
+              Cotação Online
+            </a>
           </div>
         </div>
         <div className="mt-16 border-t border-primary-foreground/10 pt-8 text-center text-xs text-primary-foreground/50">
-          <p>&copy; {new Date().getFullYear()} Imobiliária J.A Meneses. Todos os direitos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} GDA Transportes e Serviços Ltda - EPP. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
@@ -186,11 +181,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Imobiliária J.A Meneses | Aluguel de Imóveis em São Paulo" },
-      { name: "description", content: "Encontre os melhores imóveis para alugar em São Paulo com a Imobiliária J.A Meneses. Atendimento profissional e as melhores oportunidades." },
-      { name: "author", content: "J.A Meneses" },
-      { property: "og:title", content: "Imobiliária J.A Meneses" },
-      { property: "og:description", content: "Encontre os melhores imóveis para alugar em São Paulo." },
+      { title: "GDA Log | Transporte de Cargas em Goiânia e Todo o Brasil" },
+      { name: "description", content: "GDA Log — Transportadora em Goiânia, GO. Transporte rodoviário de cargas com segurança, pontualidade e frota própria. Solicite sua cotação online." },
+      { name: "author", content: "GDA Transportes e Serviços Ltda - EPP" },
+      { property: "og:title", content: "GDA Log | Transportadora em Goiânia" },
+      { property: "og:description", content: "Transporte rodoviário de cargas com segurança e pontualidade. Cotação online pelo WhatsApp." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
