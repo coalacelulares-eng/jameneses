@@ -40,6 +40,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --font-sans: "Nunito", ui-rounded, system-ui, sans-serif;
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -62,35 +63,32 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  /* GDA Log — Navy Blue Primary */
-  --primary: oklch(0.27 0.09 258);
-  --primary-foreground: oklch(0.98 0.01 258);
-  /* GDA Log — Vibrant Orange Secondary */
-  --secondary: oklch(0.7 0.19 48);
-  --secondary-foreground: oklch(0.99 0.01 48);
-
-  --background: oklch(0.99 0.005 258);
-  --foreground: oklch(0.18 0.05 258);
-
+  --radius: 1rem;
+  /* Planeta Poliglota — azul do globo */
+  --primary: oklch(0.55 0.17 250);
+  --primary-foreground: oklch(0.99 0.01 250);
+  --primary-shadow: oklch(0.42 0.15 252);
+  /* verde dos continentes */
+  --secondary: oklch(0.7 0.18 140);
+  --secondary-foreground: oklch(0.99 0.01 140);
+  --secondary-shadow: oklch(0.55 0.16 142);
+  /* laranja do marcador */
+  --accent: oklch(0.76 0.16 62);
+  --accent-foreground: oklch(0.25 0.06 255);
+  --accent-shadow: oklch(0.6 0.15 55);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.3 0.08 258);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.05 258);
-
+  --card-foreground: oklch(0.3 0.08 258);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.05 258);
-
-  --muted: oklch(0.95 0.015 258);
-  --muted-foreground: oklch(0.45 0.05 258);
-
-  --accent: oklch(0.94 0.05 48);
-  --accent-foreground: oklch(0.27 0.09 258);
-
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0.01 25);
-
-  --border: oklch(0.9 0.02 258);
-  --input: oklch(0.9 0.02 258);
-  --ring: oklch(0.7 0.19 48);
+  --popover-foreground: oklch(0.3 0.08 258);
+  --muted: oklch(0.96 0.015 240);
+  --muted-foreground: oklch(0.5 0.04 255);
+  --destructive: oklch(0.6 0.21 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.91 0.015 250);
+  --input: oklch(0.91 0.015 250);
+  --ring: oklch(0.55 0.17 250);
 }
 
 .dark {
@@ -203,3 +201,18 @@
     z-index: -9999 !important;
   }
 }
+
+/* Botões "pressionáveis" estilo app de idiomas */
+@utility btn-pop {
+  border-radius: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.2s;
+  box-shadow: 0 4px 0 0 var(--btn-shadow, var(--primary-shadow));
+  &:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 5px 0 0 var(--btn-shadow, var(--primary-shadow)); }
+  &:active { transform: translateY(4px); box-shadow: 0 0 0 0 var(--btn-shadow, var(--primary-shadow)); }
+}
+@utility shadow-secondary-pop { --btn-shadow: var(--secondary-shadow); }
+@utility shadow-accent-pop { --btn-shadow: var(--accent-shadow); }
+@utility shadow-border-pop { --btn-shadow: var(--border); }
