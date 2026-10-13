@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAprenderRouteImport } from './routes/_authenticated/aprender'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin.messages'
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAprenderRoute = AuthenticatedAprenderRouteImport.update({
+  id: '/aprender',
+  path: '/aprender',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/aprender': typeof AuthenticatedAprenderRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/properties': typeof AuthenticatedAdminPropertiesRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/aprender': typeof AuthenticatedAprenderRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/properties': typeof AuthenticatedAdminPropertiesRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/aprender': typeof AuthenticatedAprenderRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/_authenticated/admin/properties': typeof AuthenticatedAdminPropertiesRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/admin'
+    | '/aprender'
     | '/auth/callback'
     | '/admin/messages'
     | '/admin/properties'
@@ -102,6 +112,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/aprender'
     | '/auth/callback'
     | '/admin/messages'
     | '/admin/properties'
@@ -112,6 +123,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/admin'
+    | '/_authenticated/aprender'
     | '/auth/callback'
     | '/_authenticated/admin/messages'
     | '/_authenticated/admin/properties'
@@ -152,6 +164,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/aprender': {
+      id: '/_authenticated/aprender'
+      path: '/aprender'
+      fullPath: '/aprender'
+      preLoaderRoute: typeof AuthenticatedAprenderRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/auth/callback': {
@@ -202,10 +221,12 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedAprenderRoute: typeof AuthenticatedAprenderRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedAprenderRoute: AuthenticatedAprenderRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
