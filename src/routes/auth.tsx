@@ -35,16 +35,22 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent): Promise<void> {
     e.preventDefault();
     const parsed = credSchema.safeParse({ email, password });
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Dados inválidos");
+      return;
+    }
     setLoading(true);
     const { error } = isSignup
       ? await supabase.auth.signUp({ ...parsed.data, options: { emailRedirectTo: window.location.origin } })
       : await supabase.auth.signInWithPassword(parsed.data);
     setLoading(false);
-    if (error) return toast.error(isSignup ? "Não foi possível criar a conta." : "E-mail ou senha incorretos.");
+    if (error) {
+      toast.error(isSignup ? "Não foi possível criar a conta." : "E-mail ou senha incorretos.");
+      return;
+    }
     toast.success(isSignup ? "Conta criada!" : "Bem-vindo de volta!");
     navigate({ to: "/aprender" });
   }

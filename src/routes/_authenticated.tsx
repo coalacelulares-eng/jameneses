@@ -7,12 +7,7 @@ export const Route = createFileRoute('/_authenticated')({
     
     // No auto-login in loader to prevent redirect loops and allow manual login
     if (!session) {
-      throw redirect({
-        to: '/auth',
-        search: {
-          redirect: location.href,
-        },
-      })
+      throw redirect({ to: '/auth' })
     }
 
     // Role check logic
