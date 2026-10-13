@@ -1,112 +1,78 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { supabase } from '@/integrations/supabase/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
-import { useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import { z } from "zod";
+import { toast } from "sonner";
+import { X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute('/auth')({
-  component: AuthComponent,
-})
+const searchSchema = z.object({ mode: z.enum(["login", "signup"]).optional() });
 
-function AuthComponent() {
-  const [email, setEmail] = useState('admin')
-  const [password, setPassword] = useState('imovel2026')
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+export const Route = createFileRoute("/auth")({
+  validateSearch: searchSchema,
+  head: () => ({
+    meta: [
+      { title: "Entrar | Planeta Poliglota" },
+      { name: "description", content: "Entre ou crie seu perfil no Planeta Poliglota para começar a aprender idiomas." },
+      { property: "og:title", content: "Entrar | Planeta Poliglota" },
+      { property: "og:description", content: "Acesse sua conta e continue aprendendo." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: AuthPage,
+});
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    // Convert short 'admin' to the required email format for Supabase
-    const loginEmail = email === 'admin' ? 'admin@jameneses.com' : email
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email: loginEmail,
-      password,
-    })
+const credSchema = z.object({
+  email: z.string().trim().email("E-mail inválido").max(255),
+  password: z.string().min(6, "A senha precisa ter ao menos 6 caracteres").max(72),
+});
 
-    if (error && error.message === 'Email not confirmed') {
-      // Auto-confirm for the admin user during the first test
-      if (loginEmail === 'admin@jameneses.com' && password === 'imovel2026') {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: loginEmail,
-          password,
-        })
-        if (!signUpError) {
-          toast.info('Conta administrativa inicializada. Tente entrar novamente.')
-          setIsLoading(false)
-          return
-        }
-      }
+function AuthPage() {
+  const { mode } = Route.useSearch();
+  const isSignup = mode === "signup";
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(e: FormEvent): Promise<void> {
+    e.preventDefault();
+    const parsed = credSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Dados inválidos");
+      return;
     }
-
+    setLoading(true);
+    const { error } = isSignup
+      ? await supabase.auth.signUp({ ...parsed.data, options: { emailRedirectTo: window.location.origin } })
+      : await supabase.auth.signInWithPassword(parsed.data);
+    setLoading(false);
     if (error) {
-      toast.error('Erro ao entrar. Verifique suas credenciais.')
-      console.error(error)
-      setIsLoading(false)
-    } else {
-      toast.success('Login realizado com sucesso!')
-      navigate({ to: '/admin' })
+      toast.error(isSignup ? "Não foi possível criar a conta." : "E-mail ou senha incorretos.");
+      return;
     }
+    toast.success(isSignup ? "Conta criada!" : "Bem-vindo de volta!");
+    navigate({ to: "/aprender" });
   }
 
+  const input = "w-full rounded-2xl border-2 border-border bg-muted px-4 py-3.5 font-semibold outline-none focus:border-primary";
+
   return (
-    <div className="container flex h-[80vh] items-center justify-center px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold uppercase tracking-tighter text-primary">Área Restrita</CardTitle>
-          <CardDescription>
-            Imobiliária J.A Meneses
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="py-6">
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Usuário
-              </label>
-              <Input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Senha
-              </label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-              />
-            </div>
-            <Button 
-              type="submit"
-              className="w-full h-11 text-base font-semibold transition-all" 
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Entrar"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col space-y-2 text-center text-xs text-muted-foreground border-t pt-4 bg-muted/50 rounded-b-lg">
-          <p>Uso exclusivo da equipe administrativa.</p>
-        </CardFooter>
-      </Card>
+    <div className="min-h-screen bg-background px-4 py-6">
+      <div className="flex items-center justify-between">
+        <Link to="/" aria-label="Fechar" className="text-muted-foreground hover:text-foreground"><X size={28} /></Link>
+        <Link to="/auth" search={{ mode: isSignup ? "login" : "signup" }} className="btn-pop shadow-border-pop border-2 border-border px-5 py-2.5 text-sm text-primary">
+          {isSignup ? "Entrar" : "Cadastre-se"}
+        </Link>
+      </div>
+      <form onSubmit={onSubmit} className="mx-auto mt-16 flex max-w-sm flex-col gap-3">
+        <h1 className="mb-4 text-center text-2xl font-black">{isSignup ? "Crie seu perfil" : "Entrar"}</h1>
+        <input aria-label="E-mail" type="email" placeholder="E-mail" className={input} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+        <input aria-label="Senha" type="password" placeholder="Senha" className={input} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete={isSignup ? "new-password" : "current-password"} />
+        <button disabled={loading} className="btn-pop mt-2 bg-primary py-3.5 text-primary-foreground disabled:opacity-60">
+          {loading ? "Aguarde..." : isSignup ? "Criar conta" : "Entrar"}
+        </button>
+      </form>
     </div>
-  )
+  );
 }
